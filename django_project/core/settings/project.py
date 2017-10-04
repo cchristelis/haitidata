@@ -4,7 +4,7 @@ from .base import *
 from django.utils.translation import ugettext_lazy as _
 
 PROJECTION_DIRECTORY = '/tmp/'
-GEOSERVER_LOCATION = 'http://geoserver:8080/geoserver/'  # no need to change this
+GEOSERVER_LOCATION = 'http://88.99.166.60:32208/geoserver'  # no need to change this
 GEOSERVER_PUBLIC_LOCATION = os.environ.get(
     'GEOSERVER_PUBLIC_LOCATION',
     os.environ.get('SITEURL') + 'api/geoserver/'

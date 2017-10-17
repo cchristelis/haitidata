@@ -120,10 +120,12 @@ services:
     build: ./docker-geoserver
     links:
       - postgres
-    ports:
-      - "8080:8080"
-    volumes_from:
-      - data_dir_conf
+      - geoserver-mom
+    #volumes_from:
+    #  - data_dir_conf
+    volumes:
+      - ./haitidata_data:/haitidata_data:ro
+      - ./docker-geoserver/cluster.properties:/data/cluster/instance1/cluster.properties
     environment:
       - DOCKER_HOST
       - PUBLIC_PORT=80
@@ -131,6 +133,16 @@ services:
       - DJANGO_URL=http://django:8000/
       - SITEURL=http://10.0.0.3/
       - GEOSERVER_BASE_URL=http://10.0.0.3:8080/geoserver/
+      - GEOSERVER_DATA_DIR=/haitidata_data
+    network_mode: "bridge"
+
+  geoserver-mom:
+    container_name: haitidata-geoserver-mom
+    build: ./docker-geoserver-mom
+    links:
+      - postgres
+    ports:
+      - "8080:8080"
     network_mode: "bridge"
 
   geonode:
@@ -154,15 +166,15 @@ services:
     restart: always
     network_mode: "bridge"
 
-  data_dir_conf:
-    container_name: haitidata-data
-    image: geonode/geoserver_data:2.10.x
-    container_name: geoserver_data_dir
-    command: /bin/true
-    volumes:
-      - /geoserver_data/data
-    network_mode: "bridge"
+#  data_dir_conf:
+#    container_name: haitidata-data
+#    image: geonode/geoserver_data:2.10.x
+#    container_name: geoserver_data_dir
+#    command: /bin/true
+#    volumes:
+#      - /geoserver_data/data
+#    network_mode: "bridge"
 
-volumes:
+# volumes:
 
-  geoserver_data_dir:
+#  geoserver_data_dir:
